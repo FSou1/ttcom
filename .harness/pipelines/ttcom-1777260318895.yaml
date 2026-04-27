@@ -31,11 +31,16 @@ pipeline:
                       mkdir $HOME/nodejs
                       curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
                       export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
+                      node -v
+                      npm -v
               - step:
                   identifier: installdependencies
                   name: install dependencies
                   spec:
-                    command: npm install
+                    command: |-
+                      node -v
+                      npm -v
+                      npm install
                   timeout: ""
                   type: Run
               - step:
