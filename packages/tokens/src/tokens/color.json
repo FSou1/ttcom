@@ -1,0 +1,38 @@
+{
+  "color": {
+    "brand": {
+      "primary": {
+        "value": "#2454ff",
+        "type": "color"
+      },
+      "primaryHover": {
+        "value": "#173ec4",
+        "type": "color"
+      },
+      "onPrimary": {
+        "value": "#ffffff",
+        "type": "color"
+      }
+    },
+    "surface": {
+      "default": {
+        "value": "#ffffff",
+        "type": "color"
+      },
+      "muted": {
+        "value": "#f4f6fb",
+        "type": "color"
+      }
+    },
+    "text": {
+      "default": {
+        "value": "#172033",
+        "type": "color"
+      },
+      "muted": {
+        "value": "#586174",
+        "type": "color"
+      }
+    }
+  }
+}

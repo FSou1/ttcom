@@ -1,0 +1,24 @@
+{
+  "size": {
+    "radius": {
+      "control": {
+        "value": "6px",
+        "type": "dimension"
+      }
+    },
+    "space": {
+      "2": {
+        "value": "8px",
+        "type": "dimension"
+      },
+      "3": {
+        "value": "12px",
+        "type": "dimension"
+      },
+      "4": {
+        "value": "16px",
+        "type": "dimension"
+      }
+    }
+  }
+}

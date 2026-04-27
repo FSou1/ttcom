@@ -1,0 +1,42 @@
+{
+  "name": "@ttcom/components",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/ttcom-components.umd.cjs",
+  "module": "./dist/ttcom-components.js",
+  "types": "./dist/types/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/ttcom-components.js",
+      "require": "./dist/ttcom-components.umd.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "build-storybook": "storybook build",
+    "dev": "storybook dev -p 6006",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ttcom/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1 || ^19.0.0",
+    "react-dom": "^18.3.1 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
+    "@storybook/react": "^8.6.4",
+    "@storybook/react-vite": "^8.6.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "storybook": "^8.6.4"
+  }
+}

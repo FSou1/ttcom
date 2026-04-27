@@ -1,0 +1,43 @@
+@import "@ttcom/tokens/less";
+
+.ttcom-button {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: @size-radius-control;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: 700;
+  gap: @size-space-2;
+  justify-content: center;
+  min-height: 40px;
+  padding: @size-space-3 @size-space-4;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.ttcom-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.ttcom-button--primary {
+  background: @color-brand-primary;
+  color: @color-brand-onPrimary;
+}
+
+.ttcom-button--primary:hover:not(:disabled) {
+  background: @color-brand-primaryHover;
+}
+
+.ttcom-button--secondary {
+  background: @color-surface-default;
+  border-color: @color-brand-primary;
+  color: @color-brand-primary;
+}
+
+.ttcom-button--secondary:hover:not(:disabled) {
+  background: @color-surface-muted;
+}
