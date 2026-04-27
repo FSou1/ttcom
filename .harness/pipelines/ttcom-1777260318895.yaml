@@ -20,6 +20,18 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: Run
+                  name: Install Node
+                  identifier: installnode
+                  spec:
+                    shell: Sh
+                    envVariables:
+                      NODE_VERSION: 18.16.0
+                    command: |-
+                      mkdir $HOME/nodejs
+                      curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
+                      export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
+              - step:
                   identifier: installdependencies
                   name: install dependencies
                   spec:
