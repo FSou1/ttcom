@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_FSou1_ttcom_1777260329654-push-trigger-input-set
+  identifier: Build_FSou1_ttcom_1777260329654pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: ttcom
+  pipeline:
+    identifier: Build_FSou1_ttcom_1777260329654
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
