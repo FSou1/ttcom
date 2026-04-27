@@ -13,61 +13,131 @@ pipeline:
     - stage:
         identifier: build1
         name: build
+        type: CI
         spec:
           caching:
             enabled: true
           cloneCodebase: true
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: Install Node
-                  identifier: installnode
-                  spec:
-                    shell: Sh
-                    envVariables:
-                      NODE_VERSION: 18.16.0
-                    command: |-
-                      mkdir $HOME/nodejs
-                      curl -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz | tar xJ -C $HOME/nodejs
-                      export PATH=$HOME/nodejs/node-v${NODE_VERSION}-linux-x64/bin:$PATH
-                      node -v
-                      npm -v
-              - step:
-                  identifier: installdependencies
-                  name: install dependencies
-                  spec:
-                    command: |-
-                      node -v
-                      npm -v
-                      npm install
-                  timeout: ""
-                  type: Run
-              - step:
-                  identifier: test
-                  name: test
-                  spec:
-                    command: npm run test
-                  timeout: ""
-                  type: Run
-              - step:
-                  identifier: lint
-                  name: lint
-                  spec:
-                    command: npm run lint
-                  timeout: ""
-                  type: Run
-              - step:
-                  identifier: build
-                  name: build
-                  spec:
-                    command: npm run build
-                  timeout: ""
-                  type: Run
           platform:
             arch: Amd64
             os: Linux
           runtime:
-            spec: {}
             type: Cloud
-        type: CI
+            spec:
+              imageName: ubuntu-22.04
+          execution:
+            steps:
+              - step:
+                  identifier: setup_node
+                  name: setup node
+                  type: Run
+                  spec:
+                    shell: Sh
+                    outputVariables:
+                      - name: NODE_BIN
+                    envVariables:
+                      NODE_VERSION: 22.18.0
+                    command: |-
+                      set -e
+
+                      NODE_DIR="/harness/.tools/node-v${NODE_VERSION}-linux-x64"
+                      NODE_BIN="${NODE_DIR}/bin"
+
+                      if [ ! -x "${NODE_BIN}/node" ]; then
+                        mkdir -p /harness/.tools
+                        curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" \
+                          | tar -xJ -C /harness/.tools
+                      fi
+
+                      export NODE_BIN
+                      export PATH="${NODE_BIN}:$PATH"
+
+                      node -v
+                      npm -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm -v
+              - step:
+                  identifier: install_dependencies
+                  name: install dependencies
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm install --frozen-lockfile
+              - step:
+                  identifier: lint
+                  name: lint
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm lint
+              - step:
+                  identifier: typecheck
+                  name: typecheck
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm typecheck
+              - step:
+                  identifier: test
+                  name: test
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm test
+              - step:
+                  identifier: build
+                  name: build
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm build
+              - step:
+                  identifier: build_storybook
+                  name: build storybook
+                  type: Run
+                  spec:
+                    shell: Sh
+                    command: |-
+                      set -e
+                      export PATH="<+steps.setup_node.output.outputVariables.NODE_BIN>:$PATH"
+
+                      node -v
+                      corepack enable
+                      corepack prepare pnpm@9.15.4 --activate
+                      pnpm build-storybook
