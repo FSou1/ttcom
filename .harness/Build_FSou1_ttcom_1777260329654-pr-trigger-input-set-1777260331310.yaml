@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_FSou1_ttcom_1777260329654-pr-trigger-input-set
+  identifier: Build_FSou1_ttcom_1777260329654prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: ttcom
+  pipeline:
+    identifier: Build_FSou1_ttcom_1777260329654
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
